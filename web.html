@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAISON ÉLÉGANCE | Luxury Interior Design</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        :root {
+            --bg: #FAF9F6;
+            --bg-secondary: #F5F3EF;
+            --fg: #1A1A1A;
+            --muted: #6B6560;
+            --accent: #C9A962;
+            --accent-dark: #B8963E;
+            --card: #FFFFFF;
+            --border: #E8E4DF;
+        }
+        
+        [data-theme="dark"] {
+            --bg: #0F0F0F;
+            --bg-secondary: #1A1A1A;
+            --fg: #FAF9F6;
+            --muted: #9A9590;
+            --accent: #D4AF37;
+            --accent-dark: #C9A030;
+            --card: #1E1E1E;
+            --border: #2A2A2A;
+        }
+        
+        * { box-sizing: border-box; }
+        
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: 'Jost', sans-serif;
+            background-color: var(--bg);
+            color: var(--fg);
+            transition: background-color 0.4s ease, color 0.4s ease;
+            overflow-x: hidden;
+        }
+        
+        .font-display { font-family: 'Cormorant Garamond', serif; }
+        
+        /* Grain texture */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            opacity: 0.025;
+            pointer-events: none;
+            z-index: 9999;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(60px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .reveal {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+        
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+            html { scroll-behavior: auto; }
+            .reveal { opacity: 1; transform: none; }
+        }
+        
+        *:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 3px;
+        }
+        
+        /* Buttons */
+        .btn-primary {
+            background: var(--accent);
+            color: #1A1A1A;
+            padding: 16px 40px;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-size: 11px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 0; height: 0;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+        
+        .btn-primary:hover::after {
+            width: 300px; height: 300px;
+        }
+        
+        .btn-primary:hover {
+            background: var(--accent-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(201, 169, 98, 0.4);
+        }
+        
+        .btn-secondary {
+            border: 1px solid var(--fg);
+            color: var(--fg);
+            padding: 16px 40px;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-size: 11px;
+            transition: all 0.4s ease;
+            background: transparent;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--fg);
+            color: var(--bg);
+            transform: translateY(-2px);
+        }
+        
+        /* Product cards */
+        .product-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+        }
+        
+        .product-card:hover .product-image img {
+            transform: scale(1.08);
+        }
+        
+        .product-image {
+            overflow: hidden;
+            aspect-ratio: 3/4;
+            background: var(--bg-secondary);
+            position: relative;
+        }
+        
+        .product-image img {
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .product-badge {
+            position: absolute;
+            top: 16px; left: 16px;
+            background: var(--fg);
+            color: var(--bg);
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            padding: 6px 12px;
+            text-transform: uppercase;
+        }
+        
+        /* Header */
+        .header {
+            background: rgba(250, 249, 246, 0.92);
+            backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .header {
+            background: rgba(15, 15, 15, 0.92);
+        }
+        
+        .header.scrolled {
+            box-shadow: 0 4px 30px rgba(0,0,0,0.06);
+        }
+        
+        /* Navigation */
+        .nav-link {
+            position: relative;
+            letter-spacing: 0.08em;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -6px; left: 0;
+            width: 0; height: 1px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        /* Hero */
+        .hero-gradient {
+            background: linear-gradient(145deg, #1A1816 0%, #2C2825 50%, #1F1D1A 100%);
+        }
+        
+        .hero-pattern {
+            background-image: radial-gradient(circle at 2px 2px, rgba(201, 169, 98, 0.08) 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+        
+        /* Cart panel */
+        .cart-panel {
+            transform: translateX(100%);
+            transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+        }
+        
+        .cart-panel.open {
+            transform: translateX(0);
+        }
+        
+        /* Modal */
+        .modal-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+        
+        .modal-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            transform: scale(0.92) translateY(30px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .modal-overlay.open .modal-content {
+            transform: scale(1) translateY(0);
+        }
+        
+        /* Gold accents */
+        .gold-line {
+            width: 80px; height: 1px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+        }
+        
+        .gold-line-center {
+            width: 80px; height: 1px;
+            background: var(--accent);
+            margin: 0 auto;
+        }
+        
+        /* Gallery */
+        .gallery-item {
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+        
+        .gallery-item img {
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.15);
+        }
+        
+        /* Filter buttons */
+        .filter-btn {
+            color: var(--muted);
+            position: relative;
+            padding-bottom: 8px;
+            transition: color 0.3s ease;
+        }
+        
+        .filter-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 0; height: 1px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+        
+        .filter-btn:hover,
+        .filter-btn.active {
+            color: var(--fg);
+        }
+        
+        .filter-btn.active::after,
+        .filter-btn:hover::after {
+            width: 100%;
+        }
+        
+        /* Quantity controls */
+        .qty-btn {
+            width: 36px; height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--fg);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .qty-btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #1A1A1A;
+        }
+        
+        /* Form */
+        .form-input {
+            background: transparent;
+            border: 1px solid var(--border);
+            padding: 16px 20px;
+            transition: all 0.3s ease;
+            width: 100%;
+            color: var(--fg);
+        }
+        
+        .form-input:focus {
+            border-color: var(--accent);
+            outline: none;
+        }
+        
+        .form-input::placeholder {
+            color: var(--muted);
+        }
+        
+        /* Theme toggle */
+        .theme-toggle {
+            width: 46px; height: 46px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            background: transparent;
+            color: var(--fg);
+            cursor: pointer;
+        }
+        
+        .theme-toggle:hover {
+            border-color: var(--accent);
+            background: rgba(201, 169, 98, 0.1);
+        }
+        
+        /* Mobile menu */
+        .mobile-menu {
+            transform: translateX(-100%);
+            transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+        }
+        
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+        
+        /* Decorative */
+        .floating-accent {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        /* Cart count badge */
+        .cart-badge {
+            position: absolute;
+            top: -6px; right: -6px;
+            background: var(--accent);
+            color: #1A1A1A;
+            font-size: 10px;
+            width: 20px; height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        
+        /* Section background */
+        .section-light { background: var(--bg); }
+        .section-alt { background: var(--bg-secondary); }
+        
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+        }
+        
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 30px; left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--fg);
+            color: var(--bg);
+            padding: 16px 32px;
+            font-size: 13px;
+            letter-spacing: 0.05em;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 10000;
+        }
+        
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Header -->
+    <header class="header fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <nav class="flex items-center justify-between h-20 lg:h-24">
+                <!-- Logo -->
+                <a href="#home" class="font-display text-xl lg:text-2xl tracking-widest font-medium">MAISON ÉLÉGANCE</a>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden lg:flex items-center gap-12">
+                    <a href="#home" class="nav-link text-xs uppercase font-medium active">Home</a>
+                    <a href="#about" class="nav-link text-xs uppercase font-medium">About</a>
+                    <a href="#products" class="nav-link text-xs uppercase font-medium">Shop</a>
+                    <a href="#gallery" class="nav-link text-xs uppercase font-medium">Portfolio</a>
+                    <a href="#contact" class="nav-link text-xs uppercase font-medium">Contact</a>
+                </div>
+                
+                <!-- Right Actions -->
+                <div class="flex items-center gap-4">
+                    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                        <svg id="sunIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                        <svg id="moonIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                        </svg>
+                    </button>
+                    
+                    <button class="relative p-2" onclick="openCart()" aria-label="Open cart">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                        </svg>
+                        <span id="cartBadge" class="cart-badge hidden">0</span>
+                    </button>
+                    
+                    <!-- Mobile Menu Toggle -->
+                    <button class="lg:hidden p-2" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+                        <svg id="menuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                        <svg id="menuClose" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu fixed inset-0 z-40 bg-[var(--bg)] pt-24">
+        <nav class="flex flex-col items-center gap-8 p-8">
+            <a href="#home" class="font-display text-2xl" onclick="closeMobileMenu()">Home</a>
+            <a href="#about" class="font-display text-2xl" onclick="closeMobileMenu()">About</a>
+            <a href="#products" class="font-display text-2xl" onclick="closeMobileMenu()">Shop</a>
+            <a href="#gallery" class="font-display text-2xl" onclick="closeMobileMenu()">Portfolio</a>
+            <a href="#contact" class="font-display text-2xl" onclick="closeMobileMenu()">Contact</a>
+        </nav>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center hero-gradient hero-pattern">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40"></div>
+        
+        <!-- Floating decorative elements -->
+        <div class="absolute top-1/4 left-10 lg:left-20 w-px h-32 bg-gradient-to-b from-transparent via-[var(--accent)] to-transparent floating-accent opacity-40"></div>
+        <div class="absolute bottom-1/3 right-10 lg:right-32 w-px h-24 bg-gradient-to-b from-transparent via-[var(--accent)] to-transparent floating-accent opacity-40" style="animation-delay: -2s;"></div>
+        
+        <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 py-32">
+            <div class="max-w-3xl">
+                <div class="overflow-hidden mb-6">
+                    <p class="text-[var(--accent)] text-xs lg:text-sm tracking-[0.3em] uppercase reveal" style="animation: fadeInUp 1s ease forwards;">Luxury Interior Design</p>
+                </div>
+                
+                <div class="overflow-hidden mb-8">
+                    <h1 class="font-display text-4xl sm:text-5xl lg:text-7xl xl:text-8xl text-white font-light leading-tight reveal" style="animation: fadeInUp 1s ease 0.1s forwards; opacity: 0;">
+                        Transform Your Space<br>
+                        <span class="italic">with Style</span>
+                    </h1>
+                </div>
+                
+                <div class="overflow-hidden mb-12">
+                    <p class="text-white/70 text-base lg:text-lg font-light leading-relaxed max-w-xl reveal" style="animation: fadeInUp 1s ease 0.2s forwards; opacity: 0;">
+                        Curating exceptional interiors and premium home decor that reflect your unique aesthetic. Experience the art of refined living.
+                    </p>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row gap-4 reveal" style="animation: fadeInUp 1s ease 0.3s forwards; opacity: 0;">
+                    <a href="#products" class="btn-primary text-center">Shop Collection</a>
+                    <a href="#contact" class="btn-secondary text-center !border-white/30 !text-white hover:!bg-white hover:!text-[#1A1A1A]">Book Consultation</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 text-white/50">
+            <span class="text-xs tracking-[0.2em] uppercase">Scroll</span>
+            <div class="w-px h-12 bg-gradient-to-b from-white/50 to-transparent"></div>
+        </div>
+    </section>
+
+    <!-- Introduction Section -->
+    <section class="section-light py-24 lg:py-32">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+                <div class="reveal">
+                    <div class="gold-line mb-8"></div>
+                    <h2 class="font-display text-3xl lg:text-5xl font-light mb-8 leading-tight">
+                        Creating Spaces That<br><span class="italic">Inspire</span>
+                    </h2>
+                    <p class="text-[var(--muted)] leading-relaxed mb-6">
+                        At Maison Élégance, we believe that every space has a story waiting to be told. Our design philosophy centers on creating environments that seamlessly blend timeless elegance with contemporary functionality.
+                    </p>
+                    <p class="text-[var(--muted)] leading-relaxed mb-10">
+                        From initial concept to final styling, we work closely with our clients to understand their vision and transform it into reality. Our curated collection of home decor pieces allows you to bring that same refined aesthetic into your everyday life.
+                    </p>
+                    <a href="#about" class="btn-primary inline-block">Discover Our Story</a>
+                </div>
+                
+                <div class="relative reveal reveal-delay-2">
+                    <div class="aspect-[4/5] bg-[var(--bg-secondary)]">
+                        <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=800&q=80" alt="Luxury interior design" class="w-full h-full object-cover">
+                    </div>
+                    <div class="absolute -bottom-8 -left-8 lg:-bottom-12 lg:-left-12 aspect-square w-48 lg:w-64 border border-[var(--accent)]">
+                        <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=400&q=80" alt="Interior detail" class="w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products Section -->
+    <section class="section-alt py-24 lg:py-32">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="text-center mb-16 reveal">
+                <div class="gold-line-center mb-8"></div>
+                <h2 class="font-display text-3xl lg:text-5xl font-light mb-4">Featured Collection</h2>
+                <p class="text-[var(--muted)] max-w-xl mx-auto">Handpicked pieces that define modern luxury living</p>
+            </div>
+            
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8" id="featuredProducts"></div>
+            
+            <div class="text-center mt-16 reveal">
+                <a href="#products" class="btn-secondary inline-block">View All Products</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section-light py-24 lg:py-32">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="grid lg:grid-cols-2 gap-16 lg:gap-24">
+                <!-- Left: Images -->
+                <div class="grid grid-cols-2 gap-4 reveal">
+                    <div class="space-y-4">
+                        <div class="aspect-[3/4] bg-[var(--bg-secondary)]">
+                            <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=500&q=80" alt="Interior project" class="w-full h-full object-cover">
+                        </div>
+                        <div class="aspect-square bg-[var(--bg-secondary)]">
+                            <img src="https://images.unsplash.com/photo-1616137466211-f939a420be84?w=400&q=80" alt="Interior detail" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div class="pt-12 space-y-4">
+                        <div class="aspect-square bg-[var(--bg-secondary)]">
+                            <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&q=80" alt="Interior project" class="w-full h-full object-cover">
+                        </div>
+                        <div class="aspect-[3/4] bg-[var(--bg-secondary)]">
+                            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=500&q=80" alt="Interior project" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right: Content -->
+                <div class="lg:pt-12">
+                    <div class="reveal">
+                        <div class="gold-line mb-8"></div>
+                        <h2 class="font-display text-3xl lg:text-5xl font-light mb-8 leading-tight">
+                            Our Story
+                        </h2>
+                    </div>
+                    
+                    <div class="space-y-6 text-[var(--muted)] leading-relaxed reveal reveal-delay-1">
+                        <p>
+                            Founded in 2010, Maison Élégance began as a boutique interior design studio with a singular vision: to create spaces that transcend trends and embody timeless sophistication.
+                        </p>
+                        <p>
+                            Over the years, we have cultivated relationships with master craftsmen and artisans worldwide, allowing us to source and create pieces that are as unique as our clients. Our design philosophy marries classical proportions with contemporary sensibilities, resulting in interiors that feel both grand and intimately livable.
+                        </p>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-8 mt-12 reveal reveal-delay-2">
+                        <div>
+                            <div class="font-display text-4xl lg:text-5xl text-[var(--accent)] mb-2">200+</div>
+                            <p class="text-sm text-[var(--muted)] uppercase tracking-wider">Projects Completed</p>
+                        </div>
+                        <div>
+                            <div class="font-display text-4xl lg:text-5xl text-[var(--accent)] mb-2">15+</div>
+                            <p class="text-sm text-[var(--muted)] uppercase tracking-wider">Years Experience</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-12 space-y-8 reveal reveal-delay-3">
+                        <div>
+                            <h3 class="font-display text-xl mb-3">Our Mission</h3>
+                            <p class="text-[var(--muted)] text-sm leading-relaxed">To transform every space into a sanctuary of beauty and functionality, reflecting the unique personality and lifestyle of each client we serve.</p>
+                        </div>
+                        <div>
+                            <h3 class="font-display text-xl mb-3">Our Vision</h3>
+                            <p class="text-[var(--muted)] text-sm leading-relaxed">To become the definitive destination for discerning individuals seeking exceptional interior design and curated home collections worldwide.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="section-alt py-24 lg:py-32">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="text-center mb-12 reveal">
+                <div class="gold-line-center mb-8"></div>
+                <h2 class="font-display text-3xl lg:text-5xl font-light mb-4">Shop Collection</h2>
+                <p class="text-[var(--muted)] max-w-xl mx-auto">Discover our curated selection of premium furniture and decor</p>
+            </div>
+            
+            <!-- Filters -->
+            <div class="flex flex-wrap justify-center gap-6 lg:gap-10 mb-12 reveal">
+                <button class="filter-btn text-xs uppercase tracking-wider active" data-category="all">All</button>
+                <button class="filter-btn text-xs uppercase tracking-wider" data-category="seating">Seating</button>
+                <button class="filter-btn text-xs uppercase tracking-wider" data-category="lighting">Lighting</button>
+                <button class="filter-btn text-xs uppercase tracking-wider" data-category="decor">Decor</button>
+                <button class="filter-btn text-xs uppercase tracking-wider" data-category="tables">Tables</button>
+            </div>
+            
+            <!-- Products Grid -->
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8" id="productsGrid"></div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="section-light py-24 lg:py-32">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="text-center mb-16 reveal">
+                <div class="gold-line-center mb-8"></div>
+                <h2 class="font-display text-3xl lg:text-5xl font-light mb-4">Portfolio</h2>
+                <p class="text-[var(--muted)] max-w-xl mx-auto">A glimpse into our recent interior design projects</p>
+            </div>
+            
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4" id="galleryGrid"></div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section-alt py-24 lg:py-32">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="grid lg:grid-cols-2 gap-16 lg:gap-24">
+                <!-- Contact Form -->
+                <div class="reveal">
+                    <div class="gold-line mb-8"></div>
+                    <h2 class="font-display text-3xl lg:text-5xl font-light mb-4">Get in Touch</h2>
+                    <p class="text-[var(--muted)] mb-10">Ready to transform your space? Let's start a conversation.</p>
+                    
+                    <form id="contactForm" class="space-y-6">
+                        <div class="grid sm:grid-cols-2 gap-6">
+                            <div>
+                                <label for="name" class="sr-only">Name</label>
+                                <input type="text" id="name" name="name" placeholder="Your Name" class="form-input" required>
+                            </div>
+                            <div>
+                                <label for="email" class="sr-only">Email</label>
+                                <input type="email" id="email" name="email" placeholder="Your Email" class="form-input" required>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="subject" class="sr-only">Subject</label>
+                            <input type="text" id="subject" name="subject" placeholder="Subject" class="form-input">
+                        </div>
+                        <div>
+                            <label for="message" class="sr-only">Message</label>
+                            <textarea id="message" name="message" rows="5" placeholder="Your Message" class="form-input resize-none" required></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary w-full sm:w-auto">Send Message</button>
+                    </form>
+                </div>
+                
+                <!-- Contact Info -->
+                <div class="lg:pt-16 reveal reveal-delay-2">
+                    <div class="bg-[var(--card)] border border-[var(--border)] p-8 lg:p-12">
+                        <h3 class="font-display text-2xl mb-8">Contact Information</h3>
+                        
+                        <div class="space-y-8">
+                            <div class="flex gap-4">
+                                <div class="w-12 h-12 flex items-center justify-center border border-[var(--border)] flex-shrink-0">
+                                    <svg class="w-5 h-5 text-[var(--accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium mb-1">Visit Our Studio</h4>
+                                    <p class="text-[var(--muted)] text-sm">123 Design Avenue, Suite 400<br>New York, NY 10001</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex gap-4">
+                                <div class="w-12 h-12 flex items-center justify-center border border-[var(--border)] flex-shrink-0">
+                                    <svg class="w-5 h-5 text-[var(--accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium mb-1">Call Us</h4>
+                                    <p class="text-[var(--muted)] text-sm">+1 (212) 555-0123</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex gap-4">
+                                <div class="w-12 h-12 flex items-center justify-center border border-[var(--border)] flex-shrink-0">
+                                    <svg class="w-5 h-5 text-[var(--accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium mb-1">Email Us</h4>
+                                    <p class="text-[var(--muted)] text-sm">hello@maisonelegance.com</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex gap-4">
+                                <div class="w-12 h-12 flex items-center justify-center border border-[var(--border)] flex-shrink-0">
+                                    <svg class="w-5 h-5 text-[var(--accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium mb-1">Working Hours</h4>
+                                    <p class="text-[var(--muted)] text-sm">Mon - Fri: 9:00 AM - 6:00 PM<br>Sat: 10:00 AM - 4:00 PM</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[var(--fg)] text-[var(--bg)] py-16 lg:py-20">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-16">
+                <div>
+                    <h3 class="font-display text-xl tracking-widest mb-6">MAISON ÉLÉGANCE</h3>
+                    <p class="text-[var(--bg)]/60 text-sm leading-relaxed">Creating exceptional spaces that inspire and elevate everyday living.</p>
+                </div>
+                
+                <div>
+                    <h4 class="text-xs uppercase tracking-wider mb-6">Quick Links</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#home" class="text-[var(--bg)]/60 hover:text-[var(--accent)] transition-colors text-sm">Home</a></li>
+                        <li><a href="#about" class="text-[var(--bg)]/60 hover:text-[var(--accent)] transition-colors text-sm">About Us</a></li>
+                        <li><a href="#products" class="text-[var(--bg)]/60 hover:text-[var(--accent)] transition-colors text-sm">Shop</a></li>
+                        <li><a href="#gallery" class="text-[var(--bg)]/60 hover:text-[var(--accent)] transition-colors text-sm">Portfolio</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-xs uppercase tracking-wider mb-6">Services</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-[var(--bg)]/60 hover:text-[var(--accent)] transition-colors text-sm">Interior Design</a></li>
+                        <li><a href="#" class="text-[var(--bg)]/60 hover:text-[var(--accent)] transition-colors text-sm">Consultation</a></li>
+                        <li><a href="#" class="text-[var(--bg)]/60 hover:text-[var(--accent)] transition-colors text-sm">Custom Furniture</a></li>
+                        <li><a href="#" class="text-[var(--bg)]/60 hover:text-[var(--accent)] transition-colors text-sm">Styling</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-xs uppercase tracking-wider mb-6">Newsletter</h4>
+                    <p class="text-[var(--bg)]/60 text-sm mb-4">Subscribe for design inspiration and exclusive offers.</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Your email" class="bg-transparent border border-[var(--bg)]/20 px-4 py-3 text-sm flex-1 text-[var(--bg)] placeholder-[var(--bg)]/40 focus:outline-none focus:border-[var(--accent)]">
+                        <button class="bg-[var(--accent)] text-[var(--fg)] px-6 py-3 text-xs uppercase tracking-wider hover:bg-[var(--accent-dark)] transition-colors">Join</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="divider mb-8"></div>
+            
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+                <p class="text-[var(--bg)]/40 text-xs">2024 Maison Élégance. All rights reserved.</p>
+                <div class="flex gap-6">
+                    <a href="#" class="text-[var(--bg)]/40 hover:text-[var(--accent)] transition-colors text-xs">Privacy Policy</a>
+                    <a href="#" class="text-[var(--bg)]/40 hover:text-[var(--accent)] transition-colors text-xs">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Panel -->
+    <div id="cartOverlay" class="fixed inset-0 bg-black/50 z-50 opacity-0 invisible transition-all duration-300" onclick="closeCart()"></div>
+    <aside id="cartPanel" class="cart-panel fixed top-0 right-0 h-full w-full sm:w-[420px] bg-[var(--bg)] z-50 flex flex-col">
+        <div class="flex items-center justify-between p-6 border-b border-[var(--border)]">
+            <h2 class="font-display text-xl">Shopping Cart</h2>
+            <button onclick="closeCart()" class="p-2 hover:text-[var(--accent)] transition-colors" aria-label="Close cart">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        
+        <div id="cartItems" class="flex-1 overflow-y-auto p-6"></div>
+        
+        <div id="cartFooter" class="border-t border-[var(--border)] p-6">
+            <div class="flex justify-between mb-4">
+                <span class="text-[var(--muted)]">Subtotal</span>
+                <span id="cartTotal" class="font-medium">$0.00</span>
+            </div>
+            <button onclick="checkout()" class="btn-primary w-full text-center">Proceed to Checkout</button>
+            <p class="text-center text-[var(--muted)] text-xs mt-4">Free shipping on orders over $500</p>
+        </div>
+    </aside>
+
+    <!-- Product Detail Modal -->
+    <div id="productModal" class="modal-overlay fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+        <div class="modal-content bg-[var(--bg)] w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div class="grid lg:grid-cols-2">
+                <div class="aspect-square bg-[var(--bg-secondary)]">
+                    <img id="modalImage" src="" alt="" class="w-full h-full object-cover">
+                </div>
+                <div class="p-8 lg:p-12">
+                    <button onclick="closeProductModal()" class="absolute top-4 right-4 lg:static lg:float-right lg:mb-4 p-2 hover:text-[var(--accent)] transition-colors" aria-label="Close modal">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                    
+                    <div class="gold-line mb-6"></div>
+                    <p id="modalCategory" class="text-[var(--accent)] text-xs uppercase tracking-wider mb-2"></p>
+                    <h3 id="modalName" class="font-display text-2xl lg:text-3xl mb-4"></h3>
+                    <p id="modalPrice" class="text-xl mb-6"></p>
+                    <p id="modalDescription" class="text-[var(--muted)] text-sm leading-relaxed mb-8"></p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4">
+                            <span class="text-sm text-[var(--muted)]">Quantity:</span>
+                            <div class="flex items-center border border-[var(--border)]">
+                                <button class="qty-btn" onclick="updateModalQty(-1)">-</button>
+                                <span id="modalQty" class="w-12 text-center">1</span>
+                                <button class="qty-btn" onclick="updateModalQty(1)">+</button>
+                            </div>
+                        </div>
+                        <button id="modalAddToCart" class="btn-primary w-full text-center">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gallery Lightbox -->
+    <div id="lightbox" class="fixed inset-0 bg-black/95 z-50 flex items-center justify-center opacity-0 invisible transition-all duration-300">
+        <button onclick="closeLightbox()" class="absolute top-6 right-6 text-white/70 hover:text-white transition-colors" aria-label="Close lightbox">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+        <button onclick="navigateLightbox(-1)" class="absolute left-6 text-white/70 hover:text-white transition-colors" aria-label="Previous image">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"/>
+            </svg>
+        </button>
+        <button onclick="navigateLightbox(1)" class="absolute right-6 text-white/70 hover:text-white transition-colors" aria-label="Next image">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"/>
+            </svg>
+        </button>
+        <img id="lightboxImage" src="" alt="" class="max-w-[90vw] max-h-[85vh] object-contain">
+    </div>
+
+    <script>
+        // ============================================
+        // DATA
+        // ============================================
+        const products = [
+            { id: 1, name: 'Meridian Sofa', price: 3200, category: 'seating', badge: 'Best Seller', image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80', description: 'A masterwork of modern design, the Meridian Sofa combines clean architectural lines with sumptuously soft cushions. Crafted with a solid oak frame and premium Italian leather upholstery.' },
+            { id: 2, name: 'Arc Floor Lamp', price: 890, category: 'lighting', badge: null, image: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=600&q=80', description: 'Sculptural and functional, the Arc Floor Lamp features a brushed brass finish with an adjustable arm. Provides warm, diffused lighting perfect for reading corners.' },
+            { id: 3, name: 'Ceramic Vase Set', price: 180, category: 'decor', badge: null, image: 'https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?w=600&q=80', description: 'Hand-thrown ceramic vases in complementary forms. Each piece features a unique reactive glaze finish that creates subtle variations in color.' },
+            { id: 4, name: 'Oslo Coffee Table', price: 1450, category: 'tables', badge: 'New', image: 'https://images.unsplash.com/photo-1532372320572-cda25653a26d?w=600&q=80', description: 'Sculptural coffee table in solid walnut with brass inlay details. The organic form brings warmth and sophistication to any living space.' },
+            { id: 5, name: 'Lounge Chair', price: 2100, category: 'seating', badge: null, image: 'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=600&q=80', description: 'Inspired by mid-century modern design, this lounge chair features curved plywood shell and premium wool blend upholstery.' },
+            { id: 6, name: 'Pendant Light Trio', price: 650, category: 'lighting', badge: null, image: 'https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?w=600&q=80', description: 'Three hand-blown glass pendants with brass fittings. Creates stunning visual impact over dining tables or kitchen islands.' },
+            { id: 7, name: 'Abstract Sculpture', price: 420, category: 'decor', badge: null, image: 'https://images.unsplash.com/photo-1544967082-d9d25d867d66?w=600&q=80', description: 'Contemporary abstract sculpture in hand-patinated bronze. Each piece is unique and signed by the artist.' },
+            { id: 8, name: 'Side Table', price: 780, category: 'tables', badge: null, image: 'https://images.unsplash.com/photo-1499933374294-4584851497cc?w=600&q=80', description: 'Elegant side table with marble top and brushed gold steel base. Perfect beside a sofa or as a bedside companion.' },
+            { id: 9, name: 'Velvet Armchair', price: 1850, category: 'seating', badge: 'Popular', image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&q=80', description: 'Luxuriously soft velvet armchair with elegant tufting. The curved back and tapered legs create a refined silhouette.' },
+            { id: 10, name: 'Table Lamp', price: 380, category: 'lighting', badge: null, image: 'https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=600&q=80', description: 'Minimalist table lamp in honed travertine with linen shade. Provides soft, ambient lighting for any room.' },
+            { id: 11, name: 'Decorative Bowl', price: 240, category: 'decor', badge: null, image: 'https://images.unsplash.com/photo-1578500494198-246f612d3b3d?w=600&q=80', description: 'Hand-hammered brass bowl with aged patina finish. Perfect as a centerpiece or decorative accent.' },
+            { id: 12, name: 'Console Table', price: 1100, category: 'tables', badge: null, image: 'https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=600&q=80', description: 'Slim console table in ebonized oak with brass details. Ideal for entryways or behind sofas.' }
+        ];
+
+        const galleryImages = [
+            { src: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&q=80', alt: 'Modern living room' },
+            { src: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80', alt: 'Minimalist bedroom' },
+            { src: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&q=80', alt: 'Contemporary kitchen' },
+            { src: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80', alt: 'Luxury bathroom' },
+            { src: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&q=80', alt: 'Elegant dining room' },
+            { src: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=800&q=80', alt: 'Stylish home office' },
+            { src: 'https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=800&q=80', alt: 'Cozy reading nook' },
+            { src: 'https://images.unsplash.com/photo-1616137466211-f939a420be84?w=800&q=80', alt: 'Modern entryway' }
+        ];
+
+        // ============================================
+        // STATE
+        // ============================================
+        let cart = [];
+        let currentLightboxIndex = 0;
+        let modalQty = 1;
+        let currentProduct = null;
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        document.addEventListener('DOMContentLoaded', () => {
+            renderFeaturedProducts();
+            renderProducts();
+            renderGallery();
+            initScrollReveal();
+            initHeaderScroll();
+            initNavHighlight();
+            loadCartFromStorage();
+        });
+
+        // ============================================
+        // RENDERING
+        // ============================================
+        function renderFeaturedProducts() {
+            const container = document.getElementById('featuredProducts');
+            const featured = products.slice(0, 4);
+            container.innerHTML = featured.map((product, index) => createProductCard(product, index)).join('');
+        }
+
+        function renderProducts(category = 'all') {
+            const container = document.getElementById('productsGrid');
+            const filtered = category === 'all' ? products : products.filter(p => p.category === category);
+            container.innerHTML = filtered.map((product, index) => createProductCard(product, index)).join('');
+        }
+
+        function createProductCard(product, index) {
+            return `
+                <article class="product-card reveal reveal-delay-${index % 4}">
+                    <div class="product-image relative">
+                        ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
+                        <img src="${product.image}" alt="${product.name}" loading="lazy">
+                        <div class="absolute inset-0 bg-black/0 hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 hover:opacity-100">
+                            <button onclick="openProductModal(${product.id})" class="bg-white text-[#1A1A1A] px-6 py-3 text-xs uppercase tracking-wider font-medium hover:bg-[var(--accent)] transition-colors">Quick View</button>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-[var(--muted)] text-xs uppercase tracking-wider mb-1">${product.category}</p>
+                        <h3 class="font-display text-lg mb-2">${product.name}</h3>
+                        <div class="flex items-center justify-between">
+                            <span class="text-[var(--accent)] font-medium">$${product.price.toLocaleString()}</span>
+                            <button onclick="addToCart(${product.id})" class="text-xs uppercase tracking-wider hover:text-[var(--accent)] transition-colors" aria-label="Add ${product.name} to cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </article>
+            `;
+        }
+
+        function renderGallery() {
+            const container = document.getElementById('galleryGrid');
+            container.innerHTML = galleryImages.map((img, index) => `
+                <div class="gallery-item aspect-square reveal reveal-delay-${index % 4}" onclick="openLightbox(${index})">
+                    <img src="${img.src}" alt="${img.alt}" loading="lazy" class="w-full h-full object-cover">
+                </div>
+            `).join('');
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cartItems');
+            const badge = document.getElementById('cartBadge');
+            const totalEl = document.getElementById('cartTotal');
+            const footer = document.getElementById('cartFooter');
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12">
+                        <svg class="w-16 h-16 mx-auto mb-4 text-[var(--muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                        </svg>
+                        <p class="text-[var(--muted)]">Your cart is empty</p>
+                        <button onclick="closeCart()" class="btn-secondary mt-6 text-xs">Continue Shopping</button>
+                    </div>
+                `;
+                footer.style.display = 'none';
+                badge.classList.add('hidden');
+                return;
+            }
+
+            footer.style.display = 'block';
+            badge.classList.remove('hidden');
+            badge.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+            container.innerHTML = cart.map(item => `
+                <div class="flex gap-4 mb-6 pb-6 border-b border-[var(--border)]">
+                    <div class="w-20 h-24 bg-[var(--bg-secondary)] flex-shrink-0">
+                        <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-display text-sm mb-1">${item.name}</h4>
+                        <p class="text-[var(--accent)] text-sm mb-3">$${item.price.toLocaleString()}</p>
+                        <div class="flex items-center gap-2">
+                            <button class="qty-btn text-xs" onclick="updateCartQty(${item.id}, -1)">-</button>
+                            <span class="w-8 text-center text-sm">${item.quantity}</span>
+                            <button class="qty-btn text-xs" onclick="updateCartQty(${item.id}, 1)">+</button>
+                            <button onclick="removeFromCart(${item.id})" class="ml-auto text-[var(--muted)] hover:text-red-500 transition-colors" aria-label="Remove item">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            totalEl.textContent = `$${total.toLocaleString()}`;
+        }
+
+        // ============================================
+        // CART FUNCTIONS
+        // ============================================
+        function addToCart(productId, qty = 1) {
+            const product = products.find(p => p.id === productId);
+            const existing = cart.find(item => item.id === productId);
+
+            if (existing) {
+                existing.quantity += qty;
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.image,
+                    quantity: qty
+                });
+            }
+
+            saveCartToStorage();
+            renderCart();
+            showToast(`${product.name} added to cart`);
+        }
+
+        function updateCartQty(productId, delta) {
+            const item = cart.find(i => i.id === productId);
+            if (item) {
+                item.quantity += delta;
+                if (item.quantity <= 0) {
+                    cart = cart.filter(i => i.id !== productId);
+                }
+                saveCartToStorage();
+                renderCart();
+            }
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(i => i.id !== productId);
+            saveCartToStorage();
+            renderCart();
+        }
+
+        function openCart() {
+            document.getElementById('cartPanel').classList.add('open');
+            document.getElementById('cartOverlay').classList.add('opacity-100', 'visible');
+            document.getElementById('cartOverlay').classList.remove('opacity-0', 'invisible');
+            document.body.style.overflow = 'hidden';
+            renderCart();
+        }
+
+        function closeCart() {
+            document.getElementById('cartPanel').classList.remove('open');
+            document.getElementById('cartOverlay').classList.remove('opacity-100', 'visible');
+            document.getElementById('cartOverlay').classList.add('opacity-0', 'invisible');
+            document.body.style.overflow = '';
+        }
+
+        function checkout() {
+            showToast('Thank you for your order! This is a demo.');
+            cart = [];
+            saveCartToStorage();
+            renderCart();
+            closeCart();
+        }
+
+        function saveCartToStorage() {
+            localStorage.setItem('maisonCart', JSON.stringify(cart));
+        }
+
+        function loadCartFromStorage() {
+            const saved = localStorage.getItem('maisonCart');
+            if (saved) {
+                cart = JSON.parse(saved);
+            }
+        }
+
+        // ============================================
+        // PRODUCT MODAL
+        // ============================================
+        function openProductModal(productId) {
+            currentProduct = products.find(p => p.id === productId);
+            modalQty = 1;
+
+            document.getElementById('modalImage').src = currentProduct.image;
+            document.getElementById('modalImage').alt = currentProduct.name;
+            document.getElementById('modalName').textContent = currentProduct.name;
+            document.getElementById('modalCategory').textContent = currentProduct.category;
+            document.getElementById('modalPrice').textContent = `$${currentProduct.price.toLocaleString()}`;
+            document.getElementById('modalDescription').textContent = currentProduct.description;
+            document.getElementById('modalQty').textContent = modalQty;
+
+            document.getElementById('productModal').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProductModal() {
+            document.getElementById('productModal').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        function updateModalQty(delta) {
+            modalQty = Math.max(1, modalQty + delta);
+            document.getElementById('modalQty').textContent = modalQty;
+        }
+
+        document.getElementById('modalAddToCart').addEventListener('click', () => {
+            if (currentProduct) {
+                addToCart(currentProduct.id, modalQty);
+                closeProductModal();
+            }
+        });
+
+        document.getElementById('productModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('productModal')) {
+                closeProductModal();
+            }
+        });
+
+        // ============================================
+        // LIGHTBOX
+        // ============================================
+        function openLightbox(index) {
+            currentLightboxIndex = index;
+            document.getElementById('lightboxImage').src = galleryImages[index].src;
+            document.getElementById('lightbox').classList.remove('opacity-0', 'invisible');
+            document.getElementById('lightbox').classList.add('opacity-100', 'visible');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.add('opacity-0', 'invisible');
+            document.getElementById('lightbox').classList.remove('opacity-100', 'visible');
+            document.body.style.overflow = '';
+        }
+
+        function navigateLightbox(delta) {
+            currentLightboxIndex = (currentLightboxIndex + delta + galleryImages.length) % galleryImages.length;
+            document.getElementById('lightboxImage').src = galleryImages[currentLightboxIndex].src;
+        }
+
+        // ============================================
+        // FILTERS
+        // ============================================
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderProducts(btn.dataset.category);
+                
+                // Re-trigger reveal animations
+                setTimeout(() => {
+                    document.querySelectorAll('#productsGrid .reveal').forEach(el => {
+                        el.classList.remove('active');
+                    });
+                    initScrollReveal();
+                }, 100);
+            });
+        });
+
+        // ============================================
+        // THEME TOGGLE
+        // ============================================
+        function toggleTheme() {
+            const html = document.documentElement;
+            const isDark = html.dataset.theme === 'dark';
+            
+            html.dataset.theme = isDark ? '' : 'dark';
+            localStorage.setItem('theme', isDark ? '' : 'dark');
+            
+            document.getElementById('sunIcon').classList.toggle('hidden', !isDark);
+            document.getElementById('moonIcon').classList.toggle('hidden', isDark);
+        }
+
+        // Load saved theme
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.dataset.theme = 'dark';
+                document.getElementById('sunIcon').classList.remove('hidden');
+                document.getElementById('moonIcon').classList.add('hidden');
+            }
+        })();
+
+        // ============================================
+        // MOBILE MENU
+        // ============================================
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const isOpen = menu.classList.contains('open');
+            menu.classList.toggle('open');
+            document.getElementById('menuOpen').classList.toggle('hidden', !isOpen);
+            document.getElementById('menuClose').classList.toggle('hidden', isOpen);
+            document.body.style.overflow = isOpen ? '' : 'hidden';
+        }
+
+        function closeMobileMenu() {
+            document.getElementById('mobileMenu').classList.remove('open');
+            document.getElementById('menuOpen').classList.remove('hidden');
+            document.getElementById('menuClose').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // ============================================
+        // SCROLL REVEAL
+        // ============================================
+        function initScrollReveal() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        }
+
+        // ============================================
+        // HEADER SCROLL
+        // ============================================
+        function initHeaderScroll() {
+            const header = document.querySelector('.header');
+            let lastScroll = 0;
+
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.pageYOffset;
+                
+                if (currentScroll > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+                
+                lastScroll = currentScroll;
+            });
+        }
+
+        // ============================================
+        // NAV HIGHLIGHT
+        // ============================================
+        function initNavHighlight() {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - 100;
+                    if (window.pageYOffset >= sectionTop) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        }
+
+        // ============================================
+        // CONTACT FORM
+        // ============================================
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            showToast('Thank you for your message! We\'ll be in touch soon.');
+            e.target.reset();
+        });
+
+        // ============================================
+        // TOAST
+        // ============================================
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // ============================================
+        // KEYBOARD NAVIGATION
+        // ============================================
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeCart();
+                closeProductModal();
+                closeLightbox();
+                closeMobileMenu();
+            }
+        });
+    </script>
+</body>
+</html>
